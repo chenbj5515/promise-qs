@@ -35,41 +35,6 @@
         // 最后一个微任务执行，输出finally2后面的then函数，2。这里res是2的原因参见finally.html
         // 是因为finally中无论return什么都不会改变下面then中的res的，这个res还是finally上面的promise中resolve中传入的值
         // 宏任务：宏任务队列为空，什么也不执行。首轮结束。
-
-        Promise.resolve().then(() => {
-            Promise.resolve().then(() => {
-                console.log('micro task 2')
-            })
-            console.log('micro task 0')
-        })
-        Promise.resolve().then(() => {
-            console.log('micro task 1')
-        })
-        setTimeout(() => {
-            Promise.resolve().then(() => {
-                console.log('micro task 3')
-            })
-            console.log('macro task 0')
-        })
-        setTimeout(() => {
-            console.log('macro task 1')
-        })
-
-        // 输出
-        // 1,finally2,finally,finally2后面的then函数,2
-
-        // first tick：
-        // 1. 加入了两个微任务两个宏任务， 同步代码执行完毕
-        // 2. 执行微任务1， micro task queue push一个微任务。 输出micro task 0
-        // 3. 执行微任务2， 输出micro task 1
-        // 4. 执行微任务3， 输出micro task2， 所有微任务执行完毕。
-        // P.S.宏任务必须等待所有微任务执行完毕才会被执行， 如果微任务中有往微任务队列中增加一个微任务的行为， 那么宏任务也需要等待这个微任务被执行， 直到微任务队列为空。
-        // 5. 执行队列顶部的一条宏任务， 这个宏任务会往微任务队列增加一个任务， 然后输出macro task 0
-        // 6. 执行了一条宏任务， 此轮结束。
-        // second tick:
-        //     1. 无同步代码
-        // 2. 一条微任务， 执行， 输出micro task 3， 微任务队列清空
-        // 3. 宏任务队列只有一条宏任务， 执行， 输出macro task 1。 此时所有队列均为空， 执行结束。
     </script>
 </body>
 
