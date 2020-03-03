@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+</head>
+
+<body>
+    <script>
+        Promise.resolve('1').finally(res => {
+            // finally中无论return任何值都不会影响后面.then中的获取到的res,这个res还是上一个resolve时传的参数。
+            // return new Error('something wrong happened.')
+            // return 2
+            // 但是如果在finally中抛错则会走then的失败回调，这点和then中一致
+            throw new Error('something wrong happened.')
+        }).then(res => {
+            console.log('成功回调', res)
+        }, err => {
+            console.log('失败回调', err)
+        })
+    </script>
+</body>
+
+</html>
